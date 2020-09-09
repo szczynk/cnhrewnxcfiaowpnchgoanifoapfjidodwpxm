@@ -1,0 +1,25 @@
+{
+  "name": "Lookerku.com",
+  "version": "1.0.0",
+  "private": true,
+  "scripts": {
+    "dev": "nuxt",
+    "build": "nuxt build",
+    "start": "nuxt start",
+    "generate": "nuxt generate"
+  },
+  "dependencies": {
+    "bootstrap": "^4.5.2",
+    "bootstrap-vue": "^2.15.0",
+    "firebase": "^7.19.1",
+    "jquery": "^3.5.1",
+    "nuxt": "^2.14.3",
+    "popper.js": "^1.16.1",
+    "tail.select": "^0.5.15",
+    "vuexfire": "^3.2.4"
+  },
+  "devDependencies": {
+    "node-sass": "^4.14.1",
+    "sass-loader": "^9.0.3"
+  }
+}

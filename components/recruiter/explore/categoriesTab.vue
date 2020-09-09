@@ -1,0 +1,58 @@
+<template>
+    <div class="container mb-4">
+        <div class="categoriesTab d-flex row my-5">
+            <div class="col-lg-12">
+                <div class="nav flex-row nav-pills categories justify-content-center text-center" id="v-pills-tab" role="tablist" >
+                    <a class="nav-link active" id="v-pills-registered-tab" data-toggle="pill" href="#v-pills-registered" role="tab" aria-controls="v-pills-registered" aria-selected="true"> 
+                        1500 <br> <span>Jobseekers registered</span>
+                    </a>
+                    <a class="nav-link" id="v-pills-saved-tab" data-toggle="pill" href="#v-pills-saved" role="tab" aria-controls="v-pills-saved" aria-selected="false">
+                        5<br> <span>Saved Candidates</span>
+                    </a>
+                    <a class="nav-link" id="v-pills-applicant-tab" data-toggle="pill" href="#v-pills-applicant" role="tab" aria-controls="v-pills-applicant" aria-selected="false">
+                        5 <br> <span>Applicants</span>
+                    </a>
+                </div>
+            </div>
+        </div>
+
+        <div class="tab-content overflow-auto pd-2" id="v-pills-tabContent">
+            <div class="tab-pane fade show active" id="v-pills-registered" role="tabpanel" aria-labelledby="v-pills-registered-tab">
+                <jobseekerCard/>
+            </div>
+
+            <div class="tab-pane fade" id="v-pills-saved" role="tabpanel" aria-labelledby="v-pills-saved-tab">
+                <jobseekerCard/>
+            </div>
+
+            <div class="tab-pane fade" id="v-pills-applicant" role="tabpanel" aria-labelledby="v-pills-applicant-tab">
+                <jobseekerCard/>
+            </div>
+        </div>
+    </div>
+</template>
+
+<script>
+import jobseekerCard from '../../recruiter/explore/jobseekerCard'
+
+export default {
+    name: 'categoriesTab',
+    components: {
+        jobseekerCard
+    }
+    
+}
+</script>
+
+
+<!-- Add "scoped" attribute to limit CSS to this component only -->
+<style lang="scss">
+.categories {
+    .nav-link[aria-selected="true"] {
+        background-color: #fff;
+        color: #A33DD4;
+        border-bottom: 2px solid;
+        border-radius: 0;
+    }
+}
+</style>
