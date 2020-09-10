@@ -138,14 +138,16 @@
 import { mapState } from 'vuex'
 
 export default {
-    computed: mapState({user: 'user'}),
+    computed: {
+        ...mapState(['user'])
+    },
 
     methods: {
         signOut(err) {
             this.$store.dispatch("signOut")
             .then(() => {
                 this.$router.push('/home')
-                location.reload()
+                window.location.reload()
             })
             .catch(err => {
                 alert(err.message);

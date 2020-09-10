@@ -11,7 +11,10 @@ export default (context) => {
       // here is you would want to build your user
       // object, but for now, we'll just take everything
 
-      store.commit('setUser', user)
+      if (user) {
+        store.dispatch('fetchUserTab', user)
+      }
+
       resolve()
     })
   })

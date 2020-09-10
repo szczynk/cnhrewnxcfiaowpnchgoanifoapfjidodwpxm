@@ -1,17 +1,19 @@
 import Vuex from 'vuex'
-import { googleAuth, auth, StoreDB } from '~/plugins/firebase.js'
+import { auth, StoreDB } from '~/plugins/firebase.js'
+import profile from './modules/profile'
 
 const createStore = () => {
   return new Vuex.Store({
     state: {
         user: '',
+        isAuthenticated: false,
     },
 
-    getters: {
-        user(state) {
-            return state.user
-        },
-    
+    modules: {
+        profile: profile,
+    },
+
+    getters: {    
         isAuthenticated(state) {
             return !!state.user
         }
@@ -20,6 +22,10 @@ const createStore = () => {
     mutations: {
         setUser(state, payload) {
             state.user = payload
+        },
+
+        setIsAuthenticated(state, payload) {
+            state.isAuthenticated = payload;
         }
     },
 
@@ -53,7 +59,7 @@ const createStore = () => {
         
             // set user profile in state
             commit('setUser', userTab.data())
-        
+            commit('setIsAuthenticated', true);
             // change route to dashboard
             // if (router.currentRoute.path === '/login') {
             //     router.push('/home')

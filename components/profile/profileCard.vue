@@ -2,7 +2,7 @@
   <div class="profileCard text-center" width="100%"> 
     <img class="card-profile-picture" src="../../assets/profile-picture.jpg" alt="profile picture" width="125px">
     <div class="card-body">
-      <h3> {{firstName}} {{lastName}} </h3>
+      <h3> {{firstName}} {{lastName}}  </h3>
       <p>
           <i class="fa fa-map-marker"></i> 
           <span itemprop="addressRegion">{{location}}</span>
@@ -27,8 +27,13 @@
 </template>
 
 <script>
+import { mapState } from 'vuex'
+
 export default {
   name: 'profileCard',
+  computed: {
+    ...mapState(['user'])
+  },
   data: function(){
     return {
       firstName: 'M Ilham',
@@ -39,6 +44,8 @@ export default {
       email: 'm.ilhamfz02@gmail.com'
     };
   },
+
+  
 }
 </script>
 

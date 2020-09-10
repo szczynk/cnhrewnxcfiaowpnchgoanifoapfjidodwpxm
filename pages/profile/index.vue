@@ -23,6 +23,9 @@ import videoProfile from '../../components/profile/videoProfile.vue'
 import profileBio from '../../components/profile/profileBio.vue'
 import sectionFooter from '../../components/footer.vue'
 
+import { mapState } from 'vuex'
+
+
 export default {
   name: 'App',
   components: {
@@ -31,7 +34,10 @@ export default {
     videoProfile,
     profileBio,
     sectionFooter
-  }
+  },
+  computed: {
+    ...mapState(['user'])
+  },
 }
 </script>
 
