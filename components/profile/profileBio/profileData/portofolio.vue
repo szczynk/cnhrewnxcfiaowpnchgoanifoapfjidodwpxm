@@ -20,7 +20,7 @@
             <ul>
                 <li>
                     <div class="position-relative">
-                        <img src="/assets/pdf-icon.png">
+                        <img src="../../../../assets/pdf-icon.png">
                         <h6>Resume.pdf </h6>
                     </div>
                 </li>
@@ -29,7 +29,7 @@
             <ul>
                 <li>
                     <div class="position-relative">
-                        <img src="/assets/pdf-icon.png">
+                        <img src="../../../../assets/pdf-icon.png">
                         <h6>The study of blockchain technology 
                             in election system.pdf
                         </h6>

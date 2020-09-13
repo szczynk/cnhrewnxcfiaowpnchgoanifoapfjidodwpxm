@@ -3,15 +3,14 @@
         <div class="pendidikan">
             <h5 class="section-header">Riwayat Pendidikan: <span><a href="#"><i class="fa fa-plus-circle" aria-hidden="true"></i> Tambahkan Riwayat Pendidikan</a></span></h5>
             <ul>
-                <li>
+                <li v-for="myEducation in education" v-bind:key="myEducation.id" class="education">
                     <div class="position-relative">
-                        <h4>Bachelor Degree, State University Of Jakarta <span><a href="#"><i class="fa fa-pencil-square" aria-hidden="true"></i> Edit</a></span></h4>
-                        <h5>Physics</h5>
-                        <h6>September 2015 - Present (5 years)</h6>
+                        <h4>{{myEducation.name}}<span><a href="#"><i class="fa fa-pencil-square" aria-hidden="true"></i> Edit</a></span></h4>
+                        <h5>{{myEducation.company}}</h5>
+                        <h6>{{myEducation.date}} ({{myEducation.duration}})</h6>
                         <br>
                         <p>
-                            Currently writing my final year’s thesis about sound analysis and 
-                            classification using deep learning to gain a bachelor's degree.
+                            {{myEducation.description}}
                         </p>
                     </div>
                 </li>          
@@ -23,7 +22,7 @@
 <script>
 
 export default {
-  name: 'myEducation',
+    name: 'myEducation',
 }
 </script>
 

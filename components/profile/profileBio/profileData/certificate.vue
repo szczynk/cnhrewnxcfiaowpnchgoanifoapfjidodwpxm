@@ -22,29 +22,7 @@
 <script>
 
 export default {
-  name: 'certificate',
-  data: function() {
-    return {
-        certificate: [
-            {
-                id: 1,
-                name: 'Convolutional Neural Networks',
-                publisher: 'Coursera',
-                IssueDate: 'Dec 2019',
-                ExpiryDate: null,
-                credentialID: '93T9DAMWGZMT'
-            },
-            {
-                id: 1,
-                name: 'Machine Learning Basic',
-                publisher: 'Dicoding',
-                IssueDate: 'June 2020',
-                ExpiryDate: 'June 2023',
-                credentialID: 'KERZR822QPYV'
-            }
-        ]
-    };  
-  },
+    name: 'certificate',
 }
 </script>
 

@@ -13,9 +13,13 @@ export default (context) => {
 
       if (user) {
         store.dispatch('fetchUserTab', user)
+        console.log('got user', user);
+        resolve(true);
       }
-
-      resolve()
+      else {
+        // No user is signed in.
+        resolve(false);
+      }
     })
   })
 }

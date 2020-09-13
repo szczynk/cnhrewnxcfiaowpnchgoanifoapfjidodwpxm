@@ -22,28 +22,7 @@
 <script>
 
 export default {
-  name: 'achievement',
-  data: function() {
-      return {
-          achievement: [
-              {
-                  id: 1,
-                  name: 'Festival Teater Jakarta Timur',
-                  award: "1st Winner of 'Naskah Terbaik'",
-                  date: '2019',
-                  description: 'Created a theatrical play scenario that placed 1st as the best play scenario, representating Castra Mardika Theatre Group.'
-              },
-              {
-                  id: 1,
-                  name: 'Pekan Seni Mahasiswa Daerah Provinsi DKI Jakarta 2018',
-                  award: "1st Winner - Tangkai Lomba Penulisan Lakon",
-                  date: '2018',
-                  description: 'Won the 1st place of theatrical play writing contest held by Badan Pembina Seni Mahasiswa Indonesia.'
-              }
-          ]
-      };  
-    },
-
+    name: 'achievement',
 }
 </script>
 

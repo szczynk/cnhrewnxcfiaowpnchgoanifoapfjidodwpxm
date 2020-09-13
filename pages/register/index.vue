@@ -81,7 +81,7 @@ export default {
           this.email = "";
           this.password = "";
           //if you wanted to redirect after sign in you'd do that here with this.$router.push('/pagename')
-          this.$router.push('/home')
+          this.$router.push('/profile')
         })
         .catch(err => {
           alert(err.message);
@@ -94,13 +94,21 @@ export default {
         console.log(user.uid)
 
         await firebase.default.firestore().collection('users').doc(user.uid).set({
+          id: user.uid,
+          photo_url: user.photoURL,
           firstName: user.displayName.split(" ")[0],
           lastName: user.displayName.split(" ")[1],
-          icon: user.photoURL
+          city: '',
+          latest_jobplace: '',
+          latest_jobtitle: '',
+          phone_number: '',
+          email: user.email,
+          about_me: '',
+          video_url: ''
         })
 
         this.$store.dispatch("fetchUserTab", user)
-        this.$router.push('/home')
+        this.$router.push('/profile')
       }
       catch (err) {
         alert(err.message);

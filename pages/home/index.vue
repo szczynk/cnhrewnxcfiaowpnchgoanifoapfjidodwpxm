@@ -17,8 +17,6 @@ import sectionFooter from '../../components/footer.vue'
 import sectionSearchBar from '../../components/home/searchBar.vue'
 import sectionFeaturesAll from '../../components/home/sectionFeaturesAll.vue'
 
-import { mapActions } from 'vuex'
-
 export default {
   name: 'App',
   components: {

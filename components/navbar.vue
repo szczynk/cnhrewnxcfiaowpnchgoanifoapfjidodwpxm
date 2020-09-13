@@ -85,7 +85,7 @@
                             <li class="nav-item dropdown d-lg-block d-md-none d-sm-none d-none">
                                 <a href="#" class="nav-link dropdown-toggle" id="navbardrop" data-toggle="dropdown">
                                     <span>
-                                        <img class="prof-pic" :src="user.icon" width="28">
+                                        <img v-if="user.photo_url" class="prof-pic" :src="user.photo_url" width="28">
                                     </span> Hi, {{user.firstName}} 
                                 </a>
                                 
@@ -93,7 +93,7 @@
                                     <a href="/profile" class="dropdown-item page-scroll">My Profile</a>
                                     <a href="#" class="dropdown-item page-scroll">My Applications</a>
                                     <a href="#" class="dropdown-item page-scroll">Account Settings</a>
-                                    <a @click="signOut" class="dropdown-item">Logout</a>
+                                    <a @click="signOut" href="/home" class="dropdown-item">Logout</a>
                                 </div>
                             </li>
                             <!--End of Desktop Version-->
@@ -146,10 +146,13 @@ export default {
         signOut(err) {
             this.$store.dispatch("signOut")
             .then(() => {
-                this.$router.push('/home')
-                window.location.reload()
+                this.$router.push({
+                    path: "/home",
+                    force: true
+                })
             })
             .catch(err => {
+                console.log(err)
                 alert(err.message);
             });
         }

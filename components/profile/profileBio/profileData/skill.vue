@@ -3,16 +3,8 @@
         <div class="skill-pane">
             <h5 class="section-header">Endorsed Skill: <span><a href="#"><i class="fa fa-plus-circle" aria-hidden="true"></i> Tambahkan Skill</a></span></h5>
             <ul>
-                <li class="d-inline">
-                    SQL  <a href="#"><i class="fa fa-times" aria-hidden="true"></i></a>
-                </li>
-
-                <li class="d-inline">
-                    Python  <a href="#"><i class="fa fa-times" aria-hidden="true"></i></a>
-                </li>
-
-                <li class="d-inline">
-                    Machine Learning  <a href="#"><i class="fa fa-times" aria-hidden="true"></i></a>
+                <li v-for="mySkill in skill" v-bind:key="mySkill.id" class="d-inline">
+                    {{mySkill.name}}  <a href="#"><i class="fa fa-times" aria-hidden="true"></i></a>
                 </li>
             </ul>
         </div>
@@ -22,7 +14,7 @@
 <script>
 
 export default {
-  name: 'skill',
+    name: 'skill',
 }
 </script>
 

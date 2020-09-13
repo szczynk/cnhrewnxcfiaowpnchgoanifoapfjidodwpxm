@@ -1,14 +1,19 @@
 <template>
     <div class="videoProfile embed-responsive embed-responsive-16by9"> 
         <video class="video-profile text-center" width="100%" controls>
-            <source src="../../assets/videos/video2.mp4" type="video/mp4">
+            <source :src="user.video_url" type="video/mp4">
         </video> 
     </div>      
 </template>
 
 <script>
+import { mapState } from 'vuex'
+
 export default {
   name: 'videoProfile',
+  computed: {
+    ...mapState(['user'])
+  },
 }
 </script>
 
