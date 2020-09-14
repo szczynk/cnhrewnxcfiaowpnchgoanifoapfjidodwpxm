@@ -14,7 +14,22 @@ export default {
   name: 'aboutMe',
   computed: {
     ...mapState(['user'])
-  }, 
+  },
+  data() {
+    return {
+      about_me: ''
+    }
+  },
+  methods: {
+    updateProfile() {
+      this.$store.dispatch('updateAboutMe', {
+        about_me: this.about_me !== '' ? this.about_me : this.user.about_me,
+      })
+      .then(() => this.$bvModal.hide('bv-modal-profile'))
+
+      this.about_me= ''
+    }
+  }
 }
 </script>
 

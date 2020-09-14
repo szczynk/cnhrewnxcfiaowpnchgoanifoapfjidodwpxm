@@ -1,6 +1,8 @@
 export default function ({ store, redirect }) {
-    if (!store.getters['isAuthenticated']) {
-      return redirect('/login')
-    }
+  let auth = store.state.isAuthenticated
+  console.log('MIDDLEWARE AUTH', auth)
+  if (!auth) {
+    return redirect('/login')
   }
+}
   

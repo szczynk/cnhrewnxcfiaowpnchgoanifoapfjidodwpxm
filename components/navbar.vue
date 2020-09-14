@@ -90,7 +90,7 @@
                                 </a>
                                 
                                 <div class="dropdown-menu">
-                                    <a href="/profile" class="dropdown-item page-scroll">My Profile</a>
+                                    <a @click="profile" href="#" class="dropdown-item page-scroll">My Profile</a>
                                     <a href="#" class="dropdown-item page-scroll">My Applications</a>
                                     <a href="#" class="dropdown-item page-scroll">Account Settings</a>
                                     <a @click="signOut" href="/home" class="dropdown-item">Logout</a>
@@ -143,6 +143,10 @@ export default {
     },
 
     methods: {
+        profile(err) {
+            this.$router.push({path: "/profile"})
+        },
+
         signOut(err) {
             this.$store.dispatch("signOut")
             .then(() => {

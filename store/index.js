@@ -2,8 +2,9 @@ import { auth, StoreDB } from '~/plugins/firebase.js'
 // import profile from './modules/profile'
 
 export const state = () => ({
-  uid: '',
-  user: ''
+  // uid: '',
+  user: '',
+  isAuthenticated: false
 })
         
 
@@ -12,17 +13,17 @@ export const state = () => ({
     // },
 
 export const getters = {    
-  uid(state) {
-    if (state.user && state.user.id) return state.user.id
-    else return null
-  },
+  // uid(state) {
+  //   if (state.user && state.user.id) return state.user.id
+  //   else return null
+  // },
 
   user(state) {
     return state.user
   },
 
   isAuthenticated(state) {
-    return !!state.user && !!state.user.id
+    return !!state.user 
   }
 }
 
@@ -32,9 +33,14 @@ export const mutations = {
     state.user = payload
   },
 
-  saveUID(state, payload) {
-    console.log('[STORE MUTATIONS] - saveUID:', payload)
-    state.uid = payload;
+  // saveUID(state, payload) {
+  //   console.log('[STORE MUTATIONS] - saveUID:', payload)
+  //   state.uid = payload;
+  // },
+
+  isAuthenticated(state, payload) {
+    console.log('[STORE MUTATIONS] - isAuthenticated:', payload)
+    state.isAuthenticated = payload;
   }
 }
 
@@ -76,7 +82,8 @@ export const actions = {
     const userTab = await userRef.get()
     // set user profile in state
     commit('setUser', userTab.data())
-    commit('saveUID', user.uid);
+    // commit('saveUID', user.uid);
+    commit('isAuthenticated', true);
     console.log('[STORE ACTIONS] - in login, response:', status)
     
     // change route to dashboard
@@ -95,7 +102,8 @@ export const actions = {
         city: user.city,
         latest_jobplace: user.latest_jobplace,
         latest_jobtitle: user.latest_jobtitle,
-        phone_number: user.phone_number
+        phone_number: user.phone_number,
+        email: user.email,
     })
 
     dispatch('fetchUserTab', { uid: userId })
