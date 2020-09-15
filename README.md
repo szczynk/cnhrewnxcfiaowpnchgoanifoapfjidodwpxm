@@ -12,7 +12,7 @@ npm run dev
 
 For detailed explanation on how things work, check out [Nuxt.js docs](https://nuxtjs.org).
 
-PS. folder asset dan .nuxt ambil dari rar kak ilham
+PS. folder asset dan .nuxt ambil dari rar kak ilham dan buat file .env 
 
 PSS. tolong jgn di push di origin master, push ke branch lain
 
