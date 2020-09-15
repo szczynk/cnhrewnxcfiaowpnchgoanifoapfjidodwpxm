@@ -4,7 +4,7 @@
     <div class="row login-form">
         <div class="col"></div>
         <div class="col-lg-4 justify-content-center">
-            <form class="border border-light p-5" @submit.prevent="userSignIn">
+            <form class="border border-light p-5" @submit.prevent>
                 <p class="h4 mb-4 text-center">READY TO GET HIRED <br>
                     BY THE BEST COMPANY?</p>
                 <input type="email" id="defaultLoginFormEmail" class="form-control mb-4" placeholder="E-mail" v-model="email">
@@ -21,7 +21,7 @@
                     </div>
                 </div>
             
-                <button class="btn btn-info btn-block my-4" type="submit">Sign in</button>
+                <button class="btn btn-info btn-block my-4" type="submit" @click="userSignIn" >Sign in</button>
                 <p class="text-center">or sign in with:</p>
                 <button class="btn btn-google btn-block my-4" type="submit" @click="userSignInGoogle"><i class="fa fa-google"></i> Sign in with <b>Google</b></button>
             
@@ -75,8 +75,8 @@ export default {
     async userSignInGoogle() {
       const provider = new firebase.default.auth.GoogleAuthProvider()
       try {
-        let {user} = await firebase.default.auth().signInWithPopup(provider)
-        
+        var user = await firebase.default.auth().signInWithPopup(provider)
+        console.log('sign in',user)
         this.$store.dispatch("fetchUserTab", user)
         this.$router.push('/profile')
       }

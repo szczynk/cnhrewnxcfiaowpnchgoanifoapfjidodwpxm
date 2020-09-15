@@ -4,7 +4,7 @@
     <div class="row register-form">
         <div class="col"></div>
         <div class="col-lg-4 justify-content-center">
-            <form class="border border-light p-5" @submit.prevent="userSignUp">
+            <form class="border border-light p-5" @submit.prevent>
                 <p class="h4 mb-4 text-center">START YOUR<br>
                     CAREER'S JOURNEY</p>
         
@@ -28,7 +28,7 @@
                 
                 </div>
             
-                <button class="btn btn-info btn-block my-4" type="submit">Sign Up</button>
+                <button class="btn btn-info btn-block my-4" type="submit" @click="userSignUp">Sign Up</button>
                 <p class="text-center">or </p>
                 <button class="btn btn-google btn-block my-4" type="submit" @click="userSignUpGoogle"><i class="fa fa-google"></i> Sign up with <b>Google</b></button>
                 
@@ -90,8 +90,7 @@ export default {
     async userSignUpGoogle() {
       const provider = new firebase.default.auth.GoogleAuthProvider()
       try {
-        let {user} = await firebase.default.auth().signInWithPopup(provider)
-        console.log(user.uid)
+        var user = await firebase.default.auth().signInWithPopup(provider)
 
         await firebase.default.firestore().collection('users').doc(user.uid).set({
           id: user.uid,
@@ -106,7 +105,7 @@ export default {
           about_me: '',
           video_url: ''
         })
-
+        console.log('sign up',user)
         this.$store.dispatch("fetchUserTab", user)
         this.$router.push('/profile')
       }

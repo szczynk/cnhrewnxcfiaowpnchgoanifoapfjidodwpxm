@@ -29,7 +29,8 @@ export default {
     },
     methods: {
         addData() {
-            // if (name != '' && firebase.default.auth().currentUser.uid) {
+            let UID = firebase.default.auth().currentUser.uid
+            // if (name != '' && UID) {
                 firebase.default.firestore()
                 .collection('experience').add({
                     // name: name,
@@ -37,7 +38,7 @@ export default {
                     // date: date,
                     // duration: duration,
                     // description: description,
-                    uid: firebase.default.auth().currentUser.uid,
+                    uid: UID,
                     name: 'b',
                     company: 'b',
                     date: 'b',
@@ -54,10 +55,13 @@ export default {
             // }
         },
         getData() {
-            if (firebase.default.auth().currentUser.uid) {
+            let UID = firebase.default.auth().currentUser.uid
+            if (UID) {
                 this.work_experience=[]
                 firebase.default.firestore()
-                .collection('experience').get()
+                .collection('experience')
+                .where('uid', '==', UID)
+                .get()
                 .then((snap) => {
                     snap.forEach((doc) => {
                         this.work_experience.push({
@@ -70,7 +74,7 @@ export default {
                             description: doc.data().description,
                             work: doc.data().work,
                         })
-                        console.log(doc.id, " => ", doc.data());
+                        console.log('work_experience', doc.data().uid, " => ", doc.id, " => ", doc.data().name);
                     })
                 })
                 .catch((err) => {
@@ -79,7 +83,8 @@ export default {
             }
         },
         updateData(id) {
-            if (firebase.default.auth().currentUser.uid) {
+            let UID = firebase.default.auth().currentUser.uid
+            if (UID) {
                 firebase.default.firestore()
                 .collection('experience')
                 .doc(id)

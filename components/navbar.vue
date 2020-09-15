@@ -17,14 +17,14 @@
                             <li class="nav-item dropdown">
                                 <a href="#" class="nav-link dropdown-toggle" id="navbardrop" data-toggle="dropdown">Jobs</a>
                                 <div class="dropdown-menu">
-                                    <a href="#" class="dropdown-item page-scroll">Find Job</a>
-                                    <a href="#" class="dropdown-item page-scroll">Saved Job</a>
-                                    <a href="#" class="dropdown-item page-scroll">My Application</a>
+                                    <nuxt-link to="/jobs/explore#v-pills-registered" no-prefetch class="dropdown-item page-scroll">Find Job</nuxt-link>
+                                    <nuxt-link to="/jobs/explore#v-pills-saved" no-prefetch class="dropdown-item page-scroll">Saved Job</nuxt-link>
+                                    <nuxt-link to="/jobs/explore#v-pills-applicant" no-prefetch class="dropdown-item page-scroll">My Application</nuxt-link>
                                 </div>
                             </li>
 
                             <li class="nav-item mx-md-2">
-                                <a href="#" class="nav-link">Explore Companies</a>
+                                <nuxt-link to="/companies/explore" no-prefetch class="nav-link">Find Companies</nuxt-link>
                             </li>
 
 
@@ -86,6 +86,7 @@
                                 <a href="#" class="nav-link dropdown-toggle" id="navbardrop" data-toggle="dropdown">
                                     <span>
                                         <img v-if="user.photo_url" class="prof-pic" :src="user.photo_url" width="28">
+                                        <img v-else class="prof-pic" src="../assets/profile-picture.jpg" width="28">
                                     </span> Hi, {{user.firstName}} 
                                 </a>
                                 
@@ -93,7 +94,7 @@
                                     <a @click="profile" href="#" class="dropdown-item page-scroll">My Profile</a>
                                     <a href="#" class="dropdown-item page-scroll">My Applications</a>
                                     <a href="#" class="dropdown-item page-scroll">Account Settings</a>
-                                    <a @click="signOut" href="/home" class="dropdown-item">Logout</a>
+                                    <a @click="signOut" href="#" class="dropdown-item">Logout</a>
                                 </div>
                             </li>
                             <!--End of Desktop Version-->

@@ -77,6 +77,7 @@ export const actions = {
   },
 
   async fetchUserTab({ commit }, user) {
+    console.log('fetchUser', user)
     // fetch user profile
     var userRef = StoreDB.collection('users').doc(user.uid)
     const userTab = await userRef.get()
@@ -120,21 +121,6 @@ export const actions = {
     dispatch('fetchUserTab', { uid: userId })
   },
 
-  async addWorkExperience({ dispatch }, {name, company, date, duration, description}) {
-    const userId = auth.currentUser.uid
-    var userRef = StoreDB.collection('users').doc(userId)
-    // update user object
-    await userRef.collection('work_experience').add({
-      name: name,
-      company: company,
-      date: date,
-      duration: duration,
-      description: description
-    })
-
-    dispatch('fetchUserTab', { uid: userId })
-  },
-
   async signOut({ commit }) {
     // log user out
     console.log('[STORE ACTIONS] - logout')
@@ -142,6 +128,6 @@ export const actions = {
 
     // clear user data from state
     commit('setUser', null)
-    commit('saveUID', null)
+    commit('isAuthenticated', false)
   }
 }

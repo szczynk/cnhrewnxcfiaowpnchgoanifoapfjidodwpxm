@@ -20,6 +20,9 @@
 </template>
 
 <script>
+import firebase from 'firebase/app'
+import 'firebase/auth'
+import 'firebase/firestore'
 
 export default {
     name: 'myEducation',
@@ -30,7 +33,8 @@ export default {
     },
     methods: {
         addData() {
-            // if (name != '' && firebase.default.auth().currentUser.uid) {
+            let UID = firebase.default.auth().currentUser.uid
+            // if (name != '' && UID) {
                 firebase.default.firestore()
                 .collection('education').add({
                     // name: name,
@@ -38,7 +42,7 @@ export default {
                     // date: date,
                     // duration: duration,
                     // description: description,
-                    uid: firebase.default.auth().currentUser.uid,
+                    uid: UID,
                     name: 'b',
                     company: 'b',
                     date: 'b',
@@ -54,7 +58,8 @@ export default {
             // }
         },
         getData() {
-            if (firebase.default.auth().currentUser.uid) {
+            let UID = firebase.default.auth().currentUser.uid
+            if (UID) {
                 this.education=[]
                 firebase.default.firestore()
                 .collection('education').get()
@@ -78,7 +83,8 @@ export default {
             }
         },
         updateData(id) {
-            if (firebase.default.auth().currentUser.uid) {
+            let UID = firebase.default.auth().currentUser.uid
+            if (UID) {
                 firebase.default.firestore()
                 .collection('education')
                 .doc(id)
@@ -103,7 +109,8 @@ export default {
             }
         },
         deleteData(id) {
-            if (firebase.default.auth().currentUser.uid) {
+            let UID = firebase.default.auth().currentUser.uid
+            if (UID) {
                 firebase.default.firestore()
                 .collection('education')
                 .doc(id)
