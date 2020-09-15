@@ -8,19 +8,16 @@ npm install
 
 # serve with hot reload at localhost:3000
 npm run dev
-
-# build for production and launch server
-npm run build
-npm run start
-
-# generate static project
-npm run generate
 ```
 
 For detailed explanation on how things work, check out [Nuxt.js docs](https://nuxtjs.org).
 
-PS. tolong jgn di push di origin master, push ke branch lain
+PS. folder asset dan .nuxt ambil dari rar kak ilham
 
-PSS. ada bug ketika register dan login pakai google (tulisannya bad auth email apalah g jelas tapi masih bisa ketika diokein, kata google ada promise/object yg kosong)
+PSS. tolong jgn di push di origin master, push ke branch lain
 
-register dan login sudah selesai, sisanya tinggal cara CRUD upload file, role, profile, job, saved job, applied job, saved candidate, dan invited candidate
+PSSS. ada bug lg yaitu tidak bisa mempertahankan state saat page direfresh
+
+PSSSS. register, login dan profile sudah selesai, sisanya tinggal cara CRUD upload file, role, job, saved job, applied job, saved candidate, dan invited candidate
+
+PSSSSS. Sekian dan Terimakasih
