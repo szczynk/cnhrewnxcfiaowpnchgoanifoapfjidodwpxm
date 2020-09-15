@@ -66,7 +66,7 @@ export default {
         this.email = "";
         this.password = "";
         //if you wanted to redirect after sign in you'd do that here with 
-        this.$router.push('/profile')
+        this.$router.push('/home')
       })
       .catch(err => {
         alert(err.message);
@@ -78,7 +78,7 @@ export default {
         var user = await firebase.default.auth().signInWithPopup(provider)
         console.log('sign in',user)
         this.$store.dispatch("fetchUserTab", user)
-        this.$router.push('/profile')
+        this.$router.push('/home')
       }
       catch (err) {
         alert(err.message);

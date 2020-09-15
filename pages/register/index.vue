@@ -67,9 +67,35 @@ export default {
     };
   },
   methods: {
-    userSignUp(err) {
+    async userSignUp() {
+      // try {
+      //   var user = await firebase.default.auth().createUserWithEmailAndPassword(this.email, this.password)
+
+      //   await firebase.default.firestore().collection('users').doc(user.uid).set({
+      //     id: user.uid,
+      //     photo_url: '',
+      //     firstName: this.firstName,
+      //     lastName: this.lastName,
+      //     city: '',
+      //     latest_jobplace: '',
+      //     latest_jobtitle: '',
+      //     phone_number: '',
+      //     email: user.email,
+      //     about_me: '',
+      //     video_url: '',
+      //   })
+
+      //   console.log('sign up',user)
+      //   this.$store.dispatch("fetchUserTab", user)
+      //   this.$router.push('/home')
+      // }
+      // catch (err) {
+      //   alert(err.message);
+      //   console.log(err.message)
+      // }      
+      
       this.$store
-        .dispatch("signUp", {
+        .dispatch("signUpUser", {
           firstName: this.firstName,
           lastName: this.lastName,
           email: this.email,
@@ -81,7 +107,7 @@ export default {
           this.email = "";
           this.password = "";
           //if you wanted to redirect after sign in you'd do that here with this.$router.push('/pagename')
-          this.$router.push('/profile')
+          this.$router.push('/home')
         })
         .catch(err => {
           alert(err.message);
@@ -103,11 +129,13 @@ export default {
           phone_number: '',
           email: user.email,
           about_me: '',
-          video_url: ''
+          video_url: '',
+          role: 'user',
+          status: 'unemployed'
         })
         console.log('sign up',user)
         this.$store.dispatch("fetchUserTab", user)
-        this.$router.push('/profile')
+        this.$router.push('/home')
       }
       catch (err) {
         alert(err.message);

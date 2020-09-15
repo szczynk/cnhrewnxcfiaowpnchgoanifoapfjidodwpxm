@@ -68,6 +68,7 @@ export default {
   plugins: [
     '~/plugins/firebase',
     '~/plugins/fireauth',
+    // { src: '~/plugins/vuex-persist', ssr: false }
   ],
   /*
   ** Auto import components
@@ -104,7 +105,8 @@ export default {
     STORAGEBUCKET: process.env.STORAGEBUCKET,
     MESSAGINGSENDERID: process.env.MESSAGINGSENDERID,
     APPID: process.env.APPID,
-    MEASUREMENTID: process.env.MEASUREMENTID
+    MEASUREMENTID: process.env.MEASUREMENTID,
+    SECRETVUEX: process.env.SECRETVUEX
   },
   /*
   ** Build configuration

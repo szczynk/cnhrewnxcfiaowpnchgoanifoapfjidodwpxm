@@ -1,5 +1,17 @@
 import { auth, StoreDB } from '~/plugins/firebase.js'
+// import createPersistedState from "vuex-persistedstate";
+// import SecureLS from "secure-ls";
+// const ls = new SecureLS({ encodingType: 'aes', encryptionSecret: process.env.SECRETVUEX, isCompression: false });
 // import profile from './modules/profile'
+// import Cookies from 'js-cookie';
+// import VuexPersistence from 'vuex-persist'
+
+// const vuexPersist = new VuexPersistence({
+//   key: 'isAuthenticated',
+//   reducer: (state) => ({ isAuthenticated: state.isAuthenticated }),
+// })
+
+
 
 export const state = () => ({
   // uid: '',
@@ -11,6 +23,19 @@ export const state = () => ({
     // modules: {
     //     profile: profile,
     // },
+
+// export const plugins = [
+//   // createPersistedState({
+//   //   storage: {
+//   //     paths: ['user', 'isAuthenticated'],
+//   //     getItem: key => Cookies.getJSON(key),
+//   //     setItem: (key, state) => Cookies.set(key, state, { expires: 3, secure: true }),
+//   //     removeItem: key => Cookies.remove(key)
+//   //   }
+//   // })
+//   // // createPersistedState()
+//   // vuexPersist.plugin
+// ]
 
 export const getters = {    
   // uid(state) {
@@ -45,23 +70,25 @@ export const mutations = {
 }
 
 export const actions = {
-  async signUp({ dispatch }, { firstName, lastName, email, password }) {
+  async signUpUser({ dispatch }, { firstName, lastName, email, password }) {
     // sign user up
     const { user } = await auth.createUserWithEmailAndPassword(email, password)
-    var userRef = StoreDB.collection('users').doc(user.uid)
     // create user object in userCollections
+    var userRef = StoreDB.collection('users').doc(user.uid)
     await userRef.set({
       id: user.uid,
       photo_url: '',
       firstName: firstName,
       lastName: lastName,
-      city: 'Jakarta',
-      latest_jobplace: 'NetZAP',
-      latest_jobtitle: 'Customer Service',
-      phone_number: '+62812345678901',
+      city: '',
+      latest_jobplace: '',
+      latest_jobtitle: '',
+      phone_number: '',
       email: user.email,
-      about_me: 'Help Me Please',
+      about_me: '',
       video_url: '',
+      role: 'user',
+      status: 'unemployed'
     })
 
     // fetch user profile and set in state
