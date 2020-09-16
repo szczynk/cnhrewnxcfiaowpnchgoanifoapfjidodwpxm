@@ -13,7 +13,8 @@
             </span>
           </h4>
           <h5>{{myOrgExperience.organization}}</h5>
-          <h6>{{myOrgExperience.entryMonth}} {{myOrgExperience.entryYear}} - {{myOrgExperience.resignMonth}} {{myOrgExperience.resignYear}}</h6>
+          <h6 v-if="myOrgExperience.resignMonth !== ''">{{myOrgExperience.entryMonth}} {{myOrgExperience.entryYear}} - {{myOrgExperience.resignMonth}} {{myOrgExperience.resignYear}}</h6>
+          <h6 v-else>{{myOrgExperience.entryMonth}} {{myOrgExperience.entryYear}} - Sekarang</h6>          
           <br>
           <p>
               {{myOrgExperience.description}}
@@ -100,7 +101,7 @@
             name="checkbox-1"
             v-model="check"
             >
-            Saya masih bekerja disini
+            Saya masih anggota organisasi ini
             </b-form-checkbox>
           </b-form-group>
 

@@ -13,7 +13,8 @@
             </span> 
           </h4>
           <h5> {{myExperience.company}} </h5>
-          <h6> {{myExperience.entryMonth}} {{myExperience.entryYear}} - {{myExperience.resignMonth}} {{myExperience.resignYear}}</h6>
+          <h6 v-if="myExperience.resignMonth !== ''">{{myExperience.entryMonth}} {{myExperience.entryYear}} - {{myExperience.resignMonth}} {{myExperience.resignYear}}</h6>
+          <h6 v-else>{{myExperience.entryMonth}} {{myExperience.entryYear}} - Sekarang</h6>          
           <br>
           <p>{{myExperience.description}}</p>
         </div>
