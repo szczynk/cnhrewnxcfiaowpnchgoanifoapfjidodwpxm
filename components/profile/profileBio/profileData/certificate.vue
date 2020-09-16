@@ -17,7 +17,7 @@
             <h6 v-if="myCertificate.ExpiryMonth !== null"> Issued on {{myCertificate.IssueMonth}} {{myCertificate.IssueYear}} - Expired on {{myCertificate.ExpiryMonth}} {{myCertificate.ExpiryYear}}</h6>
             <h6 v-else>Issued on {{myCertificate.IssueMonth}} {{myCertificate.IssueYear}} - No Expiry Date</h6>
             <p>
-                <a href="#">Credential ID: {{myCertificate.credentialID}}</a>
+                <a :href="myCertificate.credentialURL">Credential ID: {{myCertificate.credentialID}}</a>
             </p>
           </div>
         </li>
@@ -102,7 +102,7 @@
             name="checkbox-1"
             v-model="check"
             >
-            Saya masih bekerja disini
+            Sertifikat ini tidak kedaluwarsa
             </b-form-checkbox>
           </b-form-group>
 
@@ -115,6 +115,18 @@
               id="form-input-addcredentialID"
               v-model="form.credentialID"
               placeholder="Nomor Sertifikat"
+              ></b-form-input>
+          </b-form-group>
+
+          <b-form-group
+            id="input-group-addcredentialURL"
+            label="Credential URL"
+            label-for="input-addcredentialURL"
+          >
+              <b-form-input
+              id="form-input-addcredentialURL"
+              v-model="form.credentialURL"
+              placeholder="Credential URL"
               ></b-form-input>
           </b-form-group>
 
@@ -149,6 +161,7 @@ export default {
           ExpiryMonth: '',
           ExpiryYear: '',
           credentialID: '',
+          credentialURL: '',
         },
 
         check:false,
@@ -167,6 +180,7 @@ export default {
       this.form.ExpiryMonth= ''
       this.form.ExpiryYear= ''
       this.form.credentialID= ''
+      this.form.credentialURL= ''
 
       this.$bvModal.show('bv-modal-Certificate')
     },
@@ -181,6 +195,7 @@ export default {
       this.form.ExpiryMonth= ''
       this.form.ExpiryYear= ''
       this.form.credentialID= ''
+      this.form.credentialURL= ''
 
       this.$bvModal.show('bv-modal-Certificate')
 
@@ -192,6 +207,7 @@ export default {
       this.form.ExpiryMonth= myCertificate.ExpiryMonth
       this.form.ExpiryYear= myCertificate.ExpiryYear
       this.form.credentialID= myCertificate.credentialID
+      this.form.credentialURL= myCertificate.credentialURL
     },
     async getData() {
       let UID = firebase.default.auth().currentUser.uid
@@ -211,6 +227,7 @@ export default {
               ExpiryMonth: doc.data().ExpiryMonth,
               ExpiryYear: doc.data().ExpiryYear,
               credentialID: doc.data().credentialID,
+              credentialURL: doc.data().credentialURL,
             })
             console.log('certificate => ', doc.data());
           })
@@ -234,6 +251,7 @@ export default {
           ExpiryMonth: this.form.ExpiryMonth,
           ExpiryYear: this.form.ExpiryYear,
           credentialID: this.form.credentialID,
+          credentialURL: this.form.credentialURL,
         })
         .then(() => {
           this.$bvModal.hide('bv-modal-Certificate')
@@ -260,6 +278,7 @@ export default {
             ExpiryMonth: this.form.ExpiryMonth,
             ExpiryYear: this.form.ExpiryYear,
             credentialID: this.form.credentialID,
+            credentialURL: this.form.credentialURL,
           })
           this.$bvModal.hide('bv-modal-Certificate')
           this.getData()

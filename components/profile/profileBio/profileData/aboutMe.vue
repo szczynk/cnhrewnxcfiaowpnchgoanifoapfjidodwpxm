@@ -1,9 +1,34 @@
 <template>
     <div class="aboutMe tab-pane fade show active" id="v-pills-home" role="tabpanel" aria-labelledby="v-pills-home-tab">
-       <h5 class="section-header">Tentang Saya: <span><a href="#"><i class="fa fa-pencil-square" aria-hidden="true"></i> Edit</a></span></h5>
+       <h5 class="section-header">Tentang Saya: <span><a href="#"  @click="$bvModal.show('bv-modal-aboutMe')" class="fa fa-pencil-square" aria-hidden="true">Edit</a></span></h5>
         <p>
         {{user.about_me}}
-        </p>         
+        </p>
+
+      <b-modal id="bv-modal-aboutMe" hide-footer>
+      <template v-slot:modal-title>
+        Tentang Saya
+      </template>
+        <div>
+
+      <b-form-group
+        id="input-group-aboutMe"
+        label="Beritahu tentang dirimu sehingga perusahaan lebih mudah memahamimu."
+        label-for="input-aboutMe"
+      >
+      <b-form-textarea
+        id="form-input-aboutMe"
+        v-model="about_me"
+        :placeholder="user.about_me"
+        rows="4"
+        max-rows="6"
+      ></b-form-textarea>
+      </b-form-group>
+
+      <b-button @click="updateProfile()" class="mt-3" block>Simpan</b-button>        
+      </div>
+    </b-modal>
+
     </div>
 </template>
 
@@ -25,7 +50,7 @@ export default {
       this.$store.dispatch('updateAboutMe', {
         about_me: this.about_me !== '' ? this.about_me : this.user.about_me,
       })
-      .then(() => this.$bvModal.hide('bv-modal-profile'))
+      .then(() => this.$bvModal.hide('bv-modal-aboutMe'))
 
       this.about_me= ''
     }
