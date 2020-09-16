@@ -5,27 +5,27 @@
         <ul>
           <li class="myPortofolio">
             <div class="position-relative">
-              <h4>Facebook </h4>
+              <h4 v-if="user.facebook !== ''">Facebook </h4>
               <a :href="user.facebook">{{user.facebook}}</a>
             </div>
 
             <div class="position-relative">
-              <h4>Twitter </h4>
+              <h4 v-if="user.twitter !== ''">Twitter </h4>
               <a :href="user.twitter">{{user.twitter}}</a>
             </div>
 
             <div class="position-relative">
-              <h4>Instagram </h4>
+              <h4 v-if="user.instagram !== ''">Instagram </h4>
               <a :href="user.instagram">{{user.instagram}}</a>
             </div>
 
             <div class="position-relative">
-              <h4>GitHub </h4>
+              <h4 v-if="user.github !== ''">GitHub </h4>
               <a :href="user.github">{{user.github}}</a>
             </div>
 
             <div class="position-relative">
-              <h4>Youtube </h4>
+              <h4 v-if="user.youtube !== ''">Youtube </h4>
               <a :href="user.youtube">{{user.youtube}}</a>
             </div>
 

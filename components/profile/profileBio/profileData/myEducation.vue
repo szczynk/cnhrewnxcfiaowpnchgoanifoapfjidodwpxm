@@ -14,7 +14,8 @@
               </span> 
             </h4>
             <h5>{{myEducation.location}}</h5>
-            <h6>{{myEducation.entryMonth}} {{myEducation.entryYear}} - {{myEducation.resignMonth}} {{myEducation.resignYear}}</h6>
+            <h6 v-if="myEducation.resignMonth !== ''">{{myEducation.entryMonth}} {{myEducation.entryYear}} - {{myEducation.resignMonth}} {{myEducation.resignYear}}</h6>
+            <h6 v-else>{{myEducation.entryMonth}} {{myEducation.entryYear}} - Sekarang</h6>
             <br>
             <p>
                 {{myEducation.description}}
@@ -102,7 +103,7 @@
             name="checkbox-1"
             v-model="check"
             >
-            Saya masih bekerja disini
+            Saya masih studi disini
             </b-form-checkbox>
           </b-form-group>
 

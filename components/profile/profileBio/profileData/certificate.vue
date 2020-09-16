@@ -14,7 +14,7 @@
               </span>
             </h4>
             <h5>Published by: {{myCertificate.publisher}}</h5>
-            <h6 v-if="myCertificate.ExpiryMonth !== null"> Issued on {{myCertificate.IssueMonth}} {{myCertificate.IssueYear}} - Expired on {{myCertificate.ExpiryMonth}} {{myCertificate.ExpiryYear}}</h6>
+            <h6 v-if="myCertificate.ExpiryMonth !== ''"> Issued on {{myCertificate.IssueMonth}} {{myCertificate.IssueYear}} - Expired on {{myCertificate.ExpiryMonth}} {{myCertificate.ExpiryYear}}</h6>
             <h6 v-else>Issued on {{myCertificate.IssueMonth}} {{myCertificate.IssueYear}} - No Expiry Date</h6>
             <p>
                 <a :href="myCertificate.credentialURL">Credential ID: {{myCertificate.credentialID}}</a>
