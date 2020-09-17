@@ -28,6 +28,11 @@
               <h4 v-if="user.youtube !== ''">Youtube </h4>
               <a :href="user.youtube">{{user.youtube}}</a>
             </div>
+            
+            <div class="position-relative">
+              <h4 v-if="user.site !== ''">Situs Portofolio </h4>
+              <a :href="user.site">{{user.site}}</a>
+            </div>
 
           </li>
         </ul>
@@ -114,6 +119,17 @@
               ></b-form-input>
             </b-form-group>
 
+            <b-form-group
+              id="input-group-addsite"
+              label="Situs Portofolio"
+              label-for="input-addsite">
+              <b-form-input
+                id="form-input-site"
+                v-model="user.site"
+                placeholder="Example: https://yoursite.com/"
+              ></b-form-input>
+            </b-form-group>
+
             <b-button @click="updateSocial()" class="mt-3" block>Simpan</b-button>    
           </div>
         </b-modal>
@@ -136,6 +152,7 @@ export default {
       instagram: '',
       github: '',
       youtube: '',
+      site: ''
     };
   },
   methods: {
@@ -146,6 +163,7 @@ export default {
         instagram: this.instagram !== '' ? this.instagram : this.user.instagram,
         github: this.github !== '' ? this.github : this.user.github,
         youtube: this.youtube !== '' ? this.youtube : this.user.youtube,
+        site: this.site !== '' ? this.site : this.user.site,
       })
       .then(() => this.$bvModal.hide('bv-modal-portofolio'))
 
@@ -154,6 +172,7 @@ export default {
       this.instagram= ''
       this.github= ''
       this.youtube= ''
+      this.site= ''
     }
   }
 }
