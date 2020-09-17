@@ -88,7 +88,13 @@ export const actions = {
       about_me: '',
       video_url: '',
       role: 'user',
-      status: 'unemployed'
+      status: 'unemployed',
+      facebook: '',
+      twitter: '',
+      instagram: '',
+      github: '',
+      youtube: '',
+      site: '',
     })
 
     // fetch user profile and set in state
@@ -143,6 +149,22 @@ export const actions = {
     // update user object
     await userRef.update({
         about_me: user.about_me
+    })
+
+    dispatch('fetchUserTab', { uid: userId })
+  },
+
+  async updateSocial({ dispatch }, user) {
+    const userId = auth.currentUser.uid
+    var userRef = StoreDB.collection('users').doc(userId)
+    // update user object
+    await userRef.update({
+        facebook: user.facebook,
+        twitter: user.twitter,
+        instagram: user.instagram,
+        github: user.github,
+        youtube: user.youtube,
+        site: user.site,
     })
 
     dispatch('fetchUserTab', { uid: userId })
