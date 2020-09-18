@@ -88,12 +88,19 @@ export const actions = {
       about_me: '',
       video_url: '',
       role: 'user',
-      status: 'unemployed'
+      status: 'unemployed',
+      facebook: '',
+      twitter: '',
+      instagram: '',
+      github: '',
+      youtube: '',
+      site: '',
     })
 
     // fetch user profile and set in state
     dispatch('fetchUserTab', user)
   },
+
   async signUpRecruiter({ dispatch }, { firstName, lastName, email, password, company, industry }) {
     // sign user up
     const { user } = await auth.createUserWithEmailAndPassword(email, password)
@@ -159,6 +166,7 @@ export const actions = {
         latest_jobtitle: user.latest_jobtitle,
         phone_number: user.phone_number,
         email: user.email,
+        photo_url: user.photo_url,
     })
 
     dispatch('fetchUserTab', { uid: userId })
@@ -191,6 +199,22 @@ export const actions = {
     dispatch('fetchUserTab', { uid: userId })
   },
 
+  async updateSocial({ dispatch }, user) {
+    const userId = auth.currentUser.uid
+    var userRef = StoreDB.collection('users').doc(userId)
+    // update user object
+    await userRef.update({
+        facebook: user.facebook,
+        twitter: user.twitter,
+        instagram: user.instagram,
+        github: user.github,
+        youtube: user.youtube,
+        site: user.site,
+    })
+
+    dispatch('fetchUserTab', { uid: userId })
+  },
+
   async updateAddress({ dispatch }, user) {
     const userId = auth.currentUser.uid
     var userRef = StoreDB.collection('users').doc(userId)
@@ -200,11 +224,10 @@ export const actions = {
         lat: user.lat,
         lng: user.lng
     })
-    
 
     dispatch('fetchUserTab', { uid: userId })
   },
-
+  
   async signOut({ commit }) {
     // log user out
     console.log('[STORE ACTIONS] - logout')
