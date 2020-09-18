@@ -12,20 +12,67 @@
             <div class="col lg-10">
                 <div class="company-data tab-content overflow-auto" id="v-pills-tabContent">
                     <div class="about-company tab-pane fade show active" id="v-pills-home" role="tabpanel" aria-labelledby="v-pills-home-tab">
-                        <h5>Tentang Perusahaan <span><a href="#"><i class="fa fa-pencil-square" aria-hidden="true"></i> Edit</a></span></h5>
+                        <h5>Tentang Perusahaan <span><a href="#" @click="$bvModal.show('bv-modal-companiesAbout')"><i class="fa fa-pencil-square" aria-hidden="true"></i> Edit</a></span></h5>
                         <p>
-                            {{about}}
+                            {{user.about_me}}
                         </p>
+                        <b-modal id="bv-modal-companiesAbout" hide-footer>
+                        <template v-slot:modal-title>
+                            Tentang Perusahaan
+                        </template>
+                        <div>
+                        <b-form-group
+                            id="input-group-about"
+                            label="Beritahu kandidat seperti apa perusahaan anda agar mereka lebih tertarik untuk melamar pekerjaan."
+                            label-for="input-about"
+                        >
+                        <b-form-textarea
+                            id="textarea"
+                            v-model="about_me"
+                            rows="3"
+                            max-rows="6"
+                        ></b-form-textarea>
+                        </b-form-group>
+                        <b-button @click="updateAbout()" class="mt-3" block>Simpan</b-button> 
+                        </div>
+                        </b-modal>
                     </div>
     
                     <div class="tab-pane fade" id="v-pills-maps" role="tabpanel" aria-labelledby="v-pills-maps-tab">
-                        <h5>Alamat Perusahaan <span><a href="#"><i class="fa fa-pencil-square" aria-hidden="true"></i> Edit</a></span></h5>
+                        <h5>Alamat Perusahaan <span><a href="#" @click="$bvModal.show('bv-modal-companiesAddress')" ><i class="fa fa-pencil-square" aria-hidden="true"></i> Edit</a></span></h5>
                         
-                        <p>{{alamat}}</p>
+                        <p>{{user.address}}</p>
                         <!--Google map-->
-                        <div class="container-fluid m-0 p-0">
-                            <div id="map"></div>
+                        <gmap-map 
+                        :center="{lat:user.lat, lng:user.lng}"
+                        :zoom="17" map-type-id="terrain"
+                        style="width: 500px; height: 300px" 
+                        :options="{disableDefaultUI:true}">
+                        <GmapMarker
+                            :position="{lat:user.lat, lng:user.lng}"
+                        />
+                        </gmap-map>
+
+                        <b-modal id="bv-modal-companiesAddress" hide-footer>
+                        <template v-slot:modal-title>
+                            Alamat Perusahaan
+                        </template>
+                        <div>
+                        <b-form-group
+                            id="input-group-address"
+                            label="Masukkan Alamat Perusahaan"
+                            label-for="input-address"
+                        >
+                        <b-form-textarea
+                            id="textarea"
+                            v-model="address"
+                            rows="3"
+                            max-rows="6"
+                        ></b-form-textarea>
+                        </b-form-group>
+                        <b-button @click="updateCompaniesAddress()" class="mt-3" block>Simpan</b-button> 
                         </div>
+                        </b-modal>
                     </div>
 
                     <div class="tab-pane fade" id="v-pills-jobs" role="tabpanel" aria-labelledby="v-pills-jobs-tab">
@@ -39,28 +86,62 @@
 </template>
 
 <script>
-function initMap() {       
-    var loc = {lat: -6.237869,  lng: 106.807574};
-    
-    var map = new google.maps.Map(
-    document.getElementById('map'), {zoom: 50, center: loc});
-    
-    var marker = new google.maps.Marker({position: loc, map: map});
-}
 
 import jobCard from '../../components/jobExplore/jobCard'
+import { mapState } from 'vuex'
 
 export default {
     name: 'CompaniesBio',
     components: {
         jobCard
     },
+    computed: {
+    ...mapState(['user']),
+    },
     
     data: function(){
         return {
-            about: 'netZAP adalah Penyedia Akses Internet berlisensi & telah hadir sejak tahun 2005. Selain lisensi ISP, netZAP juga mempunya lisensi BWA dengan spektrum 2053 – 2068 MHz. netZAP melayani dedicated internet dengan kecepatan tinggi tanpa quota atau unlimited untuk Perorangan, Perusahaan Kecil dan Menengah dan backup untuk Perusahaan Besar atau untuk Event yang sifatnya temporary.',
-            alamat: 'Jl. Gunawarman No.67, RT.3/RW.7, Rw. Bar., Kec. Kby. Baru, Kota Jakarta Selatan, Daerah Khusus Ibukota Jakarta 12180'
+            about_me: '',
+            currentLocation : { lat : 0, lng : 0},
+            address: ''
         };
+    },
+    methods: {
+    updateAbout() {
+      this.$store.dispatch('updateAboutMe', {
+        about_me: this.about_me !== '' ? this.about_me : this.user.about_me,
+      })
+      .then(() => this.$bvModal.hide('bv-modal-companiesAbout'))
+
+      this.about_me= ''
+    },
+
+    updateCompaniesAddress() {
+      var geocoder = new google.maps.Geocoder();
+      geocoder.geocode({'address': this.address}, (results, status) => {
+        if (status === 'OK') {
+          this.currentLocation.lat = results[0].geometry.location.lat();
+          this.currentLocation.lng = results[0].geometry.location.lng();
+        }
+
+        this.$store.dispatch('updateAddress', {
+        address: this.address !== '' ? this.address : this.user.address,
+        lat: this.lat !== 0 ? this.currentLocation.lat : this.user.lat,
+        lng: this.lng !== 0 ? this.currentLocation.lng : this.user.lng,
+        })
+        
+        .then(() => this.$bvModal.hide('bv-modal-companiesAddress'))
+
+        
+        this.address= ''
+        this.currentLocation={lat:0, lng:0}
+      })
+    },
+
+    // searchLocation: function() {
+      
+    //   console.log(this.address,this.currentLocation.lat,this.currentLocation.lng)
+    //  }
     }
 }
 </script>
