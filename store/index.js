@@ -88,13 +88,34 @@ export const actions = {
       about_me: '',
       video_url: '',
       role: 'user',
-      status: 'unemployed',
-      facebook: '',
-      twitter: '',
-      instagram: '',
-      github: '',
-      youtube: '',
-      site: '',
+      status: 'unemployed'
+    })
+
+    // fetch user profile and set in state
+    dispatch('fetchUserTab', user)
+  },
+  async signUpRecruiter({ dispatch }, { firstName, lastName, email, password, company, industry }) {
+    // sign user up
+    const { user } = await auth.createUserWithEmailAndPassword(email, password)
+    // create user object in userCollections
+    var userRef = StoreDB.collection('users').doc(user.uid)
+    await userRef.set({
+      id: user.uid,
+      photo_url: '',
+      firstName: firstName,
+      lastName: lastName,
+      city: '',
+      company: company,
+      industry: industry,
+      phone_number: '',
+      website: '',
+      email: user.email,
+      address: '',
+      lat: 0,
+      lng: 0,
+      about_me: '',
+      video_url: '',
+      role: 'recruiter',
     })
 
     // fetch user profile and set in state
@@ -143,6 +164,22 @@ export const actions = {
     dispatch('fetchUserTab', { uid: userId })
   },
 
+  async updateCompaniesProfileCard({ dispatch }, user) {
+    const userId = auth.currentUser.uid
+    var userRef = StoreDB.collection('users').doc(userId)
+    // update user object
+    await userRef.update({
+        company: user.company,
+        industry: user.industry,
+        city: user.city,
+        website: user.website,
+        phone_number: user.phone_number,
+        email: user.email,
+    })
+
+    dispatch('fetchUserTab', { uid: userId })
+  },
+
   async updateAboutMe({ dispatch }, user) {
     const userId = auth.currentUser.uid
     var userRef = StoreDB.collection('users').doc(userId)
@@ -154,18 +191,16 @@ export const actions = {
     dispatch('fetchUserTab', { uid: userId })
   },
 
-  async updateSocial({ dispatch }, user) {
+  async updateAddress({ dispatch }, user) {
     const userId = auth.currentUser.uid
     var userRef = StoreDB.collection('users').doc(userId)
     // update user object
     await userRef.update({
-        facebook: user.facebook,
-        twitter: user.twitter,
-        instagram: user.instagram,
-        github: user.github,
-        youtube: user.youtube,
-        site: user.site,
+        address: user.address,
+        lat: user.lat,
+        lng: user.lng
     })
+    
 
     dispatch('fetchUserTab', { uid: userId })
   },
