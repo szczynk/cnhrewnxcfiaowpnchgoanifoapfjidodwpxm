@@ -10,7 +10,7 @@
 </template>
 
 <script>
-import navbar from '../../components/navbar.vue'
+import navbar from '../../components/recruiter/navbar.vue'
 import companiesProfileCard from '../../components/companies/companiesprofilecard'
 import companiesBio from '../../components/companies/companiesBio'
 import sectionFooter from '../../components/footer.vue'
