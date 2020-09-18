@@ -4,22 +4,22 @@
     <div class="row register-form">
         <div class="col"></div>
         <div class="col-lg-4">
-            <form class="border border-light p-5">
+            <form class="border border-light p-5" @submit.prevent>
                 <p class="header-title h4 mb-4 text-center">TELL US ABOUT<br>
                     YOUR COMPANY'S STORY</p>
         
                 <div class="row">
                     <div class="col">
-                        <input type="text" class="form-control mb-4" placeholder="First name">
+                        <input type="text" class="form-control mb-4" placeholder="First name" v-model="firstName">
                     </div>
                     <div class="col">
-                        <input type="text" class="form-control mb-4" placeholder="Last name">
+                        <input type="text" class="form-control mb-4" placeholder="Last name" v-model="lastName">
                     </div>
                 </div>
-                <input type="text" class="form-control mb-4" placeholder="Company">
-                <input type="text" class="form-control mb-4" placeholder="Official Job Title">
-                <input type="email" id="defaultLoginFormEmail" class="form-control mb-4" placeholder="Work E-mail Address">
-                <input type="password" id="defaultLoginFormPassword" class="form-control mb-4" placeholder="Password">
+                <input type="text" class="form-control mb-4" placeholder="Company" v-model="company">
+                <input type="text" class="form-control mb-4" placeholder="Official Job Title" v-model="industry">
+                <input type="email" id="defaultLoginFormEmail" class="form-control mb-4" placeholder="Work E-mail Address" v-model="email">
+                <input type="password" id="defaultLoginFormPassword" class="form-control mb-4" placeholder="Password" v-model="password">
                 
                 <div class="d-flex justify-content-center">
                     
@@ -32,10 +32,10 @@
                 
                 </div>
             
-                <button class="btn btn-info btn-block my-4" type="submit">Sign Up</button>
+                <button class="btn btn-info btn-block my-4" type="submit" @click="recruiterSignUp()">Sign Up</button>
                 <div class="text-center">
                     <p>Already Registered?
-                        <a href="login.html">Login</a>
+                        <a href="/recruiter/login">Login</a>
                     </p>
                 </div>
             </form>
@@ -47,13 +47,52 @@
 
 <script>
 import navbar from '../../components/navbar.vue'
-
+import firebase from 'firebase/app'
+import 'firebase/auth'
+import 'firebase/firestore'
 
 export default {
   name: 'App',
   components: {
     navbar
+  },
+  data() {
+    return {
+      firstName: "",
+      lastName: "",
+      company: "",
+      industry: "",
+      email: "",
+      password: ""
+    };
+  },
+  methods: {
+    async recruiterSignUp() {
+      this.$store
+        .dispatch("signUpRecruiter", {
+          firstName: this.firstName,
+          lastName: this.lastName,
+          company: this.company,
+          industry: this.industry,
+          email: this.email,
+          password: this.password
+        })
+        .then(() => {
+          this.firstName = "";
+          this.lastName = "";
+          this.company = "";
+          this.industry = "";
+          this.email = "";
+          this.password = "";
+          //if you wanted to redirect after sign in you'd do that here with this.$router.push('/pagename')
+          this.$router.push('/recruiter')
+        })
+        .catch(err => {
+          alert(err.message);
+        });
+    },
   }
+
 }
 </script>
 
