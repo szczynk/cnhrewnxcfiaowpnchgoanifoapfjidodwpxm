@@ -37,7 +37,7 @@ export default {
     jobCard,
     categoriesTab,
     sectionFooter
-  }
+  },
 }
 </script>
 

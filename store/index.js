@@ -1,160 +1,73 @@
-import { auth, StoreDB } from '~/plugins/firebase.js'
-// import createPersistedState from "vuex-persistedstate";
-// import SecureLS from "secure-ls";
-// const ls = new SecureLS({ encodingType: 'aes', encryptionSecret: process.env.SECRETVUEX, isCompression: false });
-// import profile from './modules/profile'
-// import Cookies from 'js-cookie';
+const cookieParser = process.server ? require('cookieparser') : undefined
+// import JWTDecode from 'jwt-decode'
 // import VuexPersistence from 'vuex-persist'
+// import Cookies from 'js-cookie'
 
-// const vuexPersist = new VuexPersistence({
-//   key: 'isAuthenticated',
-//   reducer: (state) => ({ isAuthenticated: state.isAuthenticated }),
+
+// const vuexCookie = new VuexPersistence({
+//   key: 'auth',
+//   restoreState: (key, storage) => Cookies.getJSON(key),
+//   saveState: (key, state, storage) =>
+//     Cookies.set(key, state, { secure: true })
 // })
 
-
-
-export const state = () => ({
-  // uid: '',
-  user: '',
-  isAuthenticated: false
-})
-        
-
-    // modules: {
-    //     profile: profile,
-    // },
-
 // export const plugins = [
-//   // createPersistedState({
-//   //   storage: {
-//   //     paths: ['user', 'isAuthenticated'],
-//   //     getItem: key => Cookies.getJSON(key),
-//   //     setItem: (key, state) => Cookies.set(key, state, { expires: 3, secure: true }),
-//   //     removeItem: key => Cookies.remove(key)
-//   //   }
-//   // })
-//   // // createPersistedState()
-//   // vuexPersist.plugin
+//   vuexCookie.plugin
 // ]
 
-export const getters = {    
-  // uid(state) {
-  //   if (state.user && state.user.id) return state.user.id
-  //   else return null
-  // },
+export const state = () => ({
+  auth: null
+  // if (Cookies.getJSON('auth')) {
+  //   return {auth: Cookies.getJSON('auth')}
+  // }
+  // else {
+  //   return {auth: null}
+  // }
+  // return {
+  //   auth:  Cookies.getJSON('auth') ? Cookies.getJSON('auth') : null
+  // }
+})
 
-  user(state) {
-    return state.user
-  },
-
-  isAuthenticated(state) {
-    return !!state.user 
+export const getters = {
+  auth: (state) => {
+    return state.auth
   }
 }
 
 export const mutations = {
-  setUser(state, payload) {
-    console.log('[STORE MUTATIONS] - setUSER:', payload)
-    state.user = payload
-  },
-
-  // saveUID(state, payload) {
-  //   console.log('[STORE MUTATIONS] - saveUID:', payload)
-  //   state.uid = payload;
-  // },
-
-  isAuthenticated(state, payload) {
-    console.log('[STORE MUTATIONS] - isAuthenticated:', payload)
-    state.isAuthenticated = payload;
+  setAuth (state, auth) {
+    state.auth = auth
   }
 }
 
 export const actions = {
-  async signUpUser({ dispatch }, { firstName, lastName, email, password }) {
-    // sign user up
-    const { user } = await auth.createUserWithEmailAndPassword(email, password)
-    // create user object in userCollections
-    var userRef = StoreDB.collection('users').doc(user.uid)
-    await userRef.set({
-      id: user.uid,
-      photo_url: '',
-      firstName: firstName,
-      lastName: lastName,
-      city: '',
-      latest_jobplace: '',
-      latest_jobtitle: '',
-      phone_number: '',
-      email: user.email,
-      about_me: '',
-      video_url: '',
-      role: 'user',
-      status: 'unemployed'
-    })
-
-    // fetch user profile and set in state
-    dispatch('fetchUserTab', user)
+  nuxtServerInit ({ commit }, { req }) {
+    let token = null
+    if (req.headers.cookie) {
+      const parsed = cookieParser.parse(req.headers.cookie)
+      token = parsed.token
+    }
+    // const decoded = JWTDecode(token)
+    // console.log('decoded',decoded)
+    commit('setAuth', token)
   },
-
-  async signInWithEmail({ dispatch }, { email, password }) {
-    // sign user in
-    const { user } = await auth.signInWithEmailAndPassword(email, password)
-
-    // fetch user profile and set in state
-    dispatch('fetchUserTab', user)
-  },
-
-  async fetchUserTab({ commit }, user) {
-    console.log('fetchUser', user)
-    // fetch user profile
-    var userRef = StoreDB.collection('users').doc(user.uid)
-    const userTab = await userRef.get()
-    // set user profile in state
-    commit('setUser', userTab.data())
-    // commit('saveUID', user.uid);
-    commit('isAuthenticated', true);
-    console.log('[STORE ACTIONS] - in login, response:', status)
-    
-    // change route to dashboard
-    // if (router.currentRoute.path === '/login') {
-    //     router.push('/home')
-    // }
-  },
-
-  async updateProfileCard({ dispatch }, user) {
-    const userId = auth.currentUser.uid
-    var userRef = StoreDB.collection('users').doc(userId)
-    // update user object
-    await userRef.update({
-        firstName: user.firstName,
-        lastName: user.lastName,
-        city: user.city,
-        latest_jobplace: user.latest_jobplace,
-        latest_jobtitle: user.latest_jobtitle,
-        phone_number: user.phone_number,
-        email: user.email,
-    })
-
-    dispatch('fetchUserTab', { uid: userId })
-  },
-
-  async updateAboutMe({ dispatch }, user) {
-    const userId = auth.currentUser.uid
-    var userRef = StoreDB.collection('users').doc(userId)
-    // update user object
-    await userRef.update({
-        about_me: user.about_me
-    })
-
-    dispatch('fetchUserTab', { uid: userId })
-  },
-
-  async signOut({ commit }) {
-    // log user out
-    console.log('[STORE ACTIONS] - logout')
-    await auth.signOut()
-
-    // clear user data from state
-    commit('setUser', null)
-    commit('isAuthenticated', false)
+  setAuth ({ commit }, user) {
+    if (!user) {
+      commit('setAuth', null)
+      cookies
+      document.cookie = 'token=;expires=0;SameSite=Lax'
+    } else {
+      user.getIdToken().then((token) => {
+        commit('setAuth', token)
+        const expiresIn = 60 * 60 * 24 * 5 * 1000 // 5 days.
+        document.cookie = 'token=' + token + ';max-age=' + expiresIn + ';SameSite=Lax'
+        // return null
+      }).catch((error) => {
+        // eslint-disable-next-line no-console
+        console.error('Error getting ID token.', error)
+        commit('setAuth', null)
+        document.cookie = 'token=;expires=0;SameSite=Lax'
+      })
+    }
   }
 }

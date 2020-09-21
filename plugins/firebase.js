@@ -1,25 +1,35 @@
 import firebase from 'firebase/app'
-import 'firebase/auth'
 import 'firebase/firestore'
-// import 'firebase/database'
+import 'firebase/auth'
+// import 'firebase/analytics'
+import 'firebase/storage'
 
-// firebase init
-const config = {
-    apiKey: process.env.APIKEY,
-    authDomain: process.env.AUTHDOMAIN,
-    databaseURL: process.env.DATABASEURL,
-    projectId: process.env.PROJECTID,
-    storageBucket: process.env.STORAGEBUCKET,
-    messagingSenderId: process.env.MESSAGINGSENDERID,
-    appId: process.env.APPID,
-    measurementId: process.env.MEASUREMENTID
+export default ({ store }, inject) => {
+  const firebaseConfig = {
+    apiKey: process.env.FB_API_KEY,
+    authDomain: process.env.FB_AUTH_DOMAIN,
+    databaseURL: process.env.FB_DB_URL,
+    projectId: process.env.FB_PROJECT_ID,
+    storageBucket: process.env.FB_STORAGE_BUCKET,
+    messagingSenderId: process.env.FB_MESSAGING_SENDER_ID,
+    appId: process.env.FB_APP_ID,
+    measurementId: process.env.FB_MEASUREMENT_ID
+  }
+
+  if (!firebase.apps.length) {
+    // Initialize Firebase
+    firebase.initializeApp(firebaseConfig)
+  }
+
+  if (process.client) {
+    // firebase.analytics()
+    firebase.auth().onAuthStateChanged((user) => {
+      if (user) {
+        store.dispatch('setAuth', user)
+        store.dispatch('modules/users/fetchUserTab', user)
+      }
+    })
+  }
+
+  inject('firebase', firebase)
 }
-
-if (!firebase.apps.length) {
-  firebase.initializeApp(config)
-}
-
-export const auth = firebase.auth()
-// export const DB = firebase.database()
-export const StoreDB = firebase.firestore()
-export default firebase

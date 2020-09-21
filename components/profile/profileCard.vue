@@ -1,31 +1,31 @@
 <template>
   <div class="profileCard text-center" width="100%"> 
-    <img v-if="user.photo_url" class="card-profile-picture" :src="user.photo_url" alt="profile picture" width="125px">
-    <img v-else class="card-profile-picture" src="../../assets/profile-picture.jpg" alt="profile picture" width="125px">
+    <img v-if="photo_url" class="card-profile-picture" :src="photo_url" alt="profile picture" width="125px" height="125px" >
+    <img v-else class="card-profile-picture" src="../../assets/profile-picture.jpg" alt="profile picture" width="125px" height="125px">
 
     <div class="card-body">
-      <h3> {{user.firstName}} {{user.lastName}}  </h3>
+      <h3> {{form.firstName}} {{form.lastName}}  </h3>
       <p>
           <i class="fa fa-map-marker"></i> 
-          <span itemprop="addressRegion">{{user.city}}</span>
+          <span itemprop="addressRegion">{{form.city}}</span>
       </p>  
       <p itemprop="jobTitle">
           <i class="fa fa-suitcase"></i>
-          {{user.latest_jobplace}}
+          {{form.latest_jobplace}}
       </p>
       <p itemprop="jobTitle">
           <i class="fa fa-suitcase"></i>
-          {{user.latest_jobtitle}} 
+          {{form.latest_jobtitle}} 
       </p>
       <p>
           <i class="fa fa-phone"></i>
           <span itemprop="phone-number">
-              {{user.phone_number}}
+              {{form.phone_number}}
           </span>
       </p>                
       <p itemprop="company-email"> 
           <i class="fa fa-envelope-o"></i> 
-          <a href="#">{{user.email}}</a> 
+          <a href="#">{{form.email}}</a> 
       </p>
       <button @click="$bvModal.show('bv-modal-profile')" class="profile-edit-btn" name="btnAddMore">Edit Profile</button>
     </div>
@@ -36,8 +36,8 @@
     </template>
       <div>
 
-      <b-item class="card-profile-picture" alt="profile picture" width="125px">
-      <b-avatar badge-variant="info" button src="../../assets/profile-picture.jpg"></b-avatar>
+      <b-item class="card-profile-picture" alt="profile picture" width="125px" name='profile_picture'>
+        <b-avatar badge-variant="info" button src="../../assets/profile-picture.jpg"></b-avatar>
       </b-item>
 
       <b-form-group
@@ -48,16 +48,16 @@
         <b-form inline>
             <b-form-input
               id="inline-form-input-name"
-              v-model="firstName"
+              v-model="form.firstName"
               class="mb-2 mr-sm-2 mb-sm-0"
-              :placeholder="user.firstName"
+              placeholder="Nama Depan"
             ></b-form-input>
 
             <b-form-input
               id="inline-form-input-name"
-              v-model="lastName"
+              v-model="form.lastName"
               class="mb-2 mr-sm-2 mb-sm-0"
-              :placeholder="user.lastName"
+              placeholder="Nama Belakang"
             ></b-form-input>
         </b-form>
       </b-form-group>
@@ -69,8 +69,8 @@
       >
       <b-form-input
         id="form-input-location"
-        v-model="city"
-        :placeholder="user.city"
+        v-model="form.city"
+        placeholder="Lokasi"
       ></b-form-input>
       </b-form-group>
 
@@ -82,8 +82,8 @@
       >
       <b-form-input
         id="form-input-job"
-        v-model="latest_jobplace"
-        :placeholder="user.latest_jobplace"
+        v-model="form.latest_jobplace"
+        placeholder="Institusi Terakhir/Saat Ini"
       ></b-form-input>
       </b-form-group>
 
@@ -95,8 +95,8 @@
       >
       <b-form-input
         id="form-input-job"
-        v-model="latest_jobtitle"
-        :placeholder="user.latest_jobtitle"
+        v-model="form.latest_jobtitle"
+        placeholder="Bidang Terakhir/Saat Ini"
       ></b-form-input>
       </b-form-group>
 
@@ -107,8 +107,8 @@
       >
       <b-form-input
         id="form-input-phone"
-        v-model="phone_number"
-        :placeholder="user.phone_number"
+        v-model="form.phone_number"
+        placeholder="Nomor Ponsel Aktif"
       ></b-form-input>
       </b-form-group>
 
@@ -119,23 +119,10 @@
       >
       <b-form-input
         id="form-input-email"
-        v-model="email"
-        :placeholder="user.email"
+        v-model="form.email"
+        placeholder="Alamat Surel (E-mail)"
       ></b-form-input>
       </b-form-group>
-
-      <!-- <b-form-group
-        id="input-group-video"
-        label="Video Profil  :"
-        label-for="input-video"
-      >
-      <b-form-file
-      v-model="file"
-      :state="Boolean(file)"
-      :placeholder="Pilih File atau Tarik Kesini"
-      drop-:placeholder="Tarik Kesini..."
-      ></b-form-file>
-      </b-form-group> -->
 
       <b-button @click="updateProfile()" class="mt-3" block>Simpan</b-button>        
       </div>
@@ -145,55 +132,78 @@
 </template>
 
 <script>
+
 import { mapState } from 'vuex'
 
 export default {
   name: 'profileCard',
-  computed: {
-    ...mapState(['user'])
-  },
   data() {
     return {
-      firstName: '',
-      lastName: '',
-      city: '',
-      latest_jobplace: '',
-      latest_jobtitle: '',
-      phone_number: '',
-      email:'',
+      photo_url: '',
+      form: {
+        firstName: '',
+        lastName: '',
+        city: '',
+        latest_jobplace: '',
+        latest_jobtitle: '',
+        phone_number: '',
+        email:'',
+      }
     };
   },
+  mounted() {
+    this.getData();
+  },
   methods: {
-    updateProfile() {
-    //   console.log(
-    //     this.firstName,
-    //     this.lastName,
-    //     this.city,
-    //     this.latest_jobplace,
-    //     this.latest_jobtitle,
-    //     this.phone_number,
-    //     this.email
-    //   )
-    //   this.$bvModal.hide('bv-modal-profile')
-    // }
-      this.$store.dispatch('updateProfileCard', {
-        firstName: this.firstName !== '' ? this.firstName : this.user.firstName,
-        lastName: this.lastName !== '' ? this.lastName : this.user.lastName,
-        city: this.city !== '' ? this.city : this.user.city,
-        latest_jobplace: this.latest_jobplace !== '' ? this.latest_jobplace : this.user.latest_jobplace,
-        latest_jobtitle: this.latest_jobtitle !== '' ? this.latest_jobtitle : this.user.latest_jobtitle,
-        phone_number: this.phone_number !== '' ? this.phone_number : this.user.phone_number,
-        email: this.email !== '' ? this.email : this.user.email,
-      })
-      .then(() => this.$bvModal.hide('bv-modal-profile'))
+    async getData() {
+      let user = this.$firebase.auth().currentUser
+      if (user){
+        try{
+          const profile = await this.$firebase.firestore().collection('users').doc(user.uid).get()
+          this.photo_url = profile.data().photo_url
+          this.form.firstName = profile.data().firstName
+          this.form.lastName = profile.data().lastName
+          this.form.city = profile.data().city
+          this.form.latest_jobplace = profile.data().latest_jobplace
+          this.form.latest_jobtitle = profile.data().latest_jobtitle
+          this.form.phone_number = profile.data().phone_number
+          this.form.email = profile.data().email
+        }
+        catch (err) {
+          console.log(err)
+        }
+      }
+    },
 
-      this.firstName= ''
-      this.lastName= ''
-      this.city= ''
-      this.latest_jobplace= ''
-      this.latest_jobtitle= ''
-      this.phone_number= ''
-      this.email= ''
+    async updateProfile() {
+      try {        
+        await this.$firebase.firestore().collection('users')
+              .doc(this.$firebase.auth().currentUser.uid)
+              .update({
+                firstName: this.form.firstName,
+                lastName: this.form.lastName,
+                city: this.form.city,
+                latest_jobplace: this.form.latest_jobplace,
+                latest_jobtitle: this.form.latest_jobtitle,
+                phone_number: this.form.phone_number,
+                email: this.form.email,
+              })
+
+        this.form.firstName= ''
+        this.form.lastName= ''
+        this.form.city= ''
+        this.form.latest_jobplace= ''
+        this.form.latest_jobtitle= ''
+        this.form.phone_number= ''
+        this.form.email= ''
+
+        this.$bvModal.hide('bv-modal-profile')
+        await this.$store.dispatch("modules/users/fetchUserTab", this.$firebase.auth().currentUser)
+      }
+      catch (err) {
+        alert(err)
+        console.log(err)
+      }
     }
   }
 }

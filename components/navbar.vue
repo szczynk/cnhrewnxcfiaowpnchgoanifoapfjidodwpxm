@@ -11,7 +11,7 @@
                         <span class="navbar-toggler-icon"></span>
                     </button>
 
-                    <template v-if="user">
+                    <template v-if="auth">
                     <div class="collapse navbar-collapse" id="navb">
                         <ul class="navbar-nav ml-auto mr-3">
                             <li class="nav-item dropdown">
@@ -85,16 +85,16 @@
                             <li class="nav-item dropdown d-lg-block d-md-none d-sm-none d-none">
                                 <a href="#" class="nav-link dropdown-toggle" id="navbardrop" data-toggle="dropdown">
                                     <span>
-                                        <img v-if="user.photo_url" class="prof-pic" :src="user.photo_url" width="28">
-                                        <img v-else class="prof-pic" src="../assets/profile-picture.jpg" width="28">
-                                    </span> Hi, {{user.firstName}} 
+                                        <b-img v-if="photo_url" class="prof-pic" :src="photo_url" width="28" height="28"></b-img>
+                                        <b-img v-else class="prof-pic" src="../assets/profile-picture.jpg"  width="28" height="28"></b-img>
+                                    </span> Hi, {{firstName}} 
                                 </a>
                                 
                                 <div class="dropdown-menu">
-                                    <a @click="profile" href="#" class="dropdown-item page-scroll">My Profile</a>
-                                    <a href="#" class="dropdown-item page-scroll">My Applications</a>
-                                    <a href="#" class="dropdown-item page-scroll">Account Settings</a>
-                                    <a @click="signOut" href="#" class="dropdown-item">Logout</a>
+                                    <nuxt-link to="/profile" class="dropdown-item page-scroll">My Profile</nuxt-link>
+                                    <a class="dropdown-item page-scroll">My Applications</a>
+                                    <a class="dropdown-item page-scroll">Account Settings</a>
+                                    <a @click="signOut" class="dropdown-item">Logout</a>
                                 </div>
                             </li>
                             <!--End of Desktop Version-->
@@ -109,8 +109,8 @@
                                 <a href="#" class="nav-link dropdown-toggle" id="navbardrop" data-toggle="dropdown">Jobs</a>
                                 <div class="dropdown-menu">
                                     <nuxt-link to="/jobs/explore#v-pills-registered" no-prefetch class="dropdown-item page-scroll">Find Job</nuxt-link>
-                                    <nuxt-link to="/jobs/explore#v-pills-saved" no-prefetch class="dropdown-item page-scroll">Saved Job</nuxt-link>
-                                    <nuxt-link to="/jobs/explore#v-pills-applicant" no-prefetch class="dropdown-item page-scroll">My Application</nuxt-link>
+                                    <!-- <nuxt-link to="/jobs/explore#v-pills-saved" no-prefetch class="dropdown-item page-scroll">Saved Job</nuxt-link>
+                                    <nuxt-link to="/jobs/explore#v-pills-applicant" no-prefetch class="dropdown-item page-scroll">My Application</nuxt-link> -->
                                 </div>
                             </li>
 
@@ -136,41 +136,74 @@
 </template>
 
 <script>
-import { mapState } from 'vuex'
-
+import { mapGetters } from 'vuex'
 export default {
-    computed: {
-        ...mapState(['user'])
-    },
-
-    methods: {
-        profile(err) {
-            this.$router.push({path: "/profile"})
-        },
-
-        signOut(err) {
-            this.$store.dispatch("signOut")
-            .then(() => {
-                this.$router.push({
-                    path: "/home",
-                    force: true
-                })
-            })
-            .catch(err => {
-                console.log(err)
-                alert(err.message);
-            });
-        }
-    },
-    
-    mounted() {
-        $(function () {
-            $(document).scroll(function () {
-                var $nav = $(".navbar-light");
-                $nav.toggleClass('scrolled', $(this).scrollTop() > $nav.height());
-            });
-        });
+  data() {
+    return {
+      firstName: '',
+      photo_url: ''
     }
+  },
+  computed: {
+    ...mapGetters(['auth'])
+  },
+
+  // async created() {
+  //   let user = this.$firebase.auth().currentUser
+  //   if (user){
+  //     try{
+  //       const profile = await this.$firebase.firestore().collection('users').doc(user.uid).get()
+  //       this.firstName = profile.data().firstName
+  //       this.photo_url = profile.data().photo_url
+  //     }
+  //     catch (err) {
+  //       console.log(err)
+  //     }
+  //   }
+  // },
+  methods: {
+    async getData() {
+      let user = this.$firebase.auth().currentUser
+      if (user){
+        try{
+          const profile = await this.$firebase.firestore().collection('users').doc(user.uid).get()
+          this.firstName = profile.data().firstName
+          this.photo_url = profile.data().photo_url
+        }
+        catch (err) {
+          console.log(err)
+        }
+      }
+    },
+
+    signOut() {
+      try {
+        this.$firebase.auth().signOut()
+        this.$store.commit('setAuth', null)
+        document.cookie = 'token=;expires=0;SameSite=Lax'
+        this.$store.commit("modules/users/setUser", null)
+        this.$router.replace({
+          path: "/home",
+          force: true
+        })
+      }
+      
+      catch(err) {
+        console.log(err)
+        alert(err);
+      }
+    }
+  },
+  
+  mounted() {
+    $(function () {
+      $(document).scroll(function () {
+        var $nav = $(".navbar-light");
+        $nav.toggleClass('scrolled', $(this).scrollTop() > $nav.height());
+      });
+    });
+    this.getData();
+  }
 }
 </script>
 

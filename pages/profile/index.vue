@@ -25,7 +25,7 @@ import sectionFooter from '../../components/footer.vue'
 
 export default {
   name: 'App',
-  middleware: 'auth',
+  middleware: 'authenticated-access',
   components: {
     navbar,
     profileCard,

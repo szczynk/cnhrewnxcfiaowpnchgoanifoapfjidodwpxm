@@ -27,7 +27,7 @@
             
                 <div class="text-center">
                     <p>Not a member?
-                        <a href="/register">Register</a>
+                        <nuxt-link to="/register">Register</nuxt-link>
                     </p>
                 </div>
             </form>
@@ -41,11 +41,11 @@
 <script>
 import navbar from '../../components/navbar.vue'
 import sectionFooter from '../../components/footer.vue'
-import firebase from 'firebase/app'
-import 'firebase/auth'
+import { mapGetters } from 'vuex'
 
 export default {
   name: 'App',
+  middleware: 'anonymous-access',
   components: {
     navbar,
     sectionFooter
@@ -56,33 +56,36 @@ export default {
       password: '',
     }
   },
+  computed: {
+    ...mapGetters(['auth'])
+  },
+  watch: {
+    auth (value) {
+      if (value) {
+        this.$router.push({
+          path: '/home'
+        })
+      }
+    }
+  },
   methods: {
-    userSignIn(err) {
-      this.$store.dispatch("signInWithEmail",{
-        email: this.email,
-        password: this.password
-      })
-      .then(() => {
-        this.email = "";
-        this.password = "";
-        //if you wanted to redirect after sign in you'd do that here with 
-        this.$router.push('/home')
-      })
-      .catch(err => {
-        alert(err.message);
-      });
+    async userSignIn() {
+      try {
+        await this.$firebase.auth().signInWithEmailAndPassword(this.email, this.password)
+      }
+      catch(err) {
+        alert(err);
+        console.log(err)
+      };
     },
     async userSignInGoogle() {
-      const provider = new firebase.default.auth.GoogleAuthProvider()
+      const provider = new this.$firebase.auth.GoogleAuthProvider()
       try {
-        var user = await firebase.default.auth().signInWithPopup(provider)
-        console.log('sign in',user)
-        this.$store.dispatch("fetchUserTab", user)
-        this.$router.push('/home')
+        await this.$firebase.auth().signInWithPopup(provider)
       }
       catch (err) {
-        alert(err.message);
-        console.log(err.message)
+        alert(err);
+        console.log(err)
       }
     }
   }

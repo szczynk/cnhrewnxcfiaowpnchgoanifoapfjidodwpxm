@@ -67,8 +67,7 @@ export default {
 
   plugins: [
     '~/plugins/firebase',
-    '~/plugins/fireauth',
-    // { src: '~/plugins/vuex-persist', ssr: false }
+    // '~/plugins/vuex-persist'
   ],
   /*
   ** Auto import components
@@ -98,21 +97,21 @@ export default {
   },
   
   env: {
-    APIKEY: process.env.APIKEY,
-    AUTHDOMAIN: process.env.AUTHDOMAIN,
-    DATABASEURL: process.env.DATABASEURL,
-    PROJECTID: process.env.PROJECTID,
-    STORAGEBUCKET: process.env.STORAGEBUCKET,
-    MESSAGINGSENDERID: process.env.MESSAGINGSENDERID,
-    APPID: process.env.APPID,
-    MEASUREMENTID: process.env.MEASUREMENTID,
-    SECRETVUEX: process.env.SECRETVUEX
+    FB_API_KEY: process.env.FB_API_KEY,
+    FB_AUTH_DOMAIN: process.env.FB_AUTH_DOMAIN,
+    FB_DB_URL: process.env.FB_DB_URL,
+    FB_PROJECT_ID: process.env.FB_PROJECT_ID,
+    FB_STORAGE_BUCKET: process.env.FB_STORAGE_BUCKET,
+    FB_MESSAGING_SENDER_ID: process.env.FB_MESSAGING_SENDER_ID,
+    FB_APP_ID: process.env.FB_APP_ID,
+    FB_MEASUREMENT_ID: process.env.FB_MEASUREMENT_ID
   },
   /*
   ** Build configuration
   ** See https://nuxtjs.org/api/configuration-build/
   */
   build: {
-    
+    extend (config, ctx) {
+    }
   }
 }

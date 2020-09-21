@@ -2,33 +2,35 @@
     <div class="aboutMe tab-pane fade show active" id="v-pills-home" role="tabpanel" aria-labelledby="v-pills-home-tab">
        <h5 class="section-header">Tentang Saya: <span><a href="#"><i class="fa fa-pencil-square" aria-hidden="true"></i> Edit</a></span></h5>
         <p>
-        {{user.about_me}}
+        {{about_me}}
         </p>         
     </div>
 </template>
 
 <script>
-import { mapState } from 'vuex'
-
 export default {
   name: 'aboutMe',
-  computed: {
-    ...mapState(['user'])
-  },
   data() {
     return {
       about_me: ''
     }
   },
   methods: {
-    updateProfile() {
-      this.$store.dispatch('updateAboutMe', {
-        about_me: this.about_me !== '' ? this.about_me : this.user.about_me,
-      })
-      .then(() => this.$bvModal.hide('bv-modal-profile'))
-
-      this.about_me= ''
-    }
+    async getData() {
+      let user = this.$firebase.auth().currentUser
+      if (user){
+        try{
+          const profile = await this.$firebase.firestore().collection('users').doc(user.uid).get()
+          this.about_me = profile.data().about_me
+        }
+        catch (err) {
+          console.log(err)
+        }
+      }
+    },
+  },
+  mounted() {
+    this.getData();
   }
 }
 </script>

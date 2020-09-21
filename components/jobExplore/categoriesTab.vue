@@ -5,10 +5,10 @@
                 <a class="nav-link active" id="v-pills-registered-tab" data-toggle="pill" href="#v-pills-registered" role="tab" aria-controls="v-pills-registered" aria-selected="true"> 
                     1500 <br> <span>Jobs Listed</span>
                 </a>
-                <a class="nav-link" id="v-pills-saved-tab" data-toggle="pill" href="#v-pills-saved" role="tab" aria-controls="v-pills-saved" aria-selected="false">
+                <a v-if="auth" class="nav-link" id="v-pills-saved-tab" data-toggle="pill" href="#v-pills-saved" role="tab" aria-controls="v-pills-saved" aria-selected="false">
                     5<br> <span>Saved Jobs</span>
                 </a>
-                <a class="nav-link" id="v-pills-applicant-tab" data-toggle="pill" href="#v-pills-applicant" role="tab" aria-controls="v-pills-applicant" aria-selected="false">
+                <a v-if="auth" class="nav-link" id="v-pills-applicant-tab" data-toggle="pill" href="#v-pills-applicant" role="tab" aria-controls="v-pills-applicant" aria-selected="false">
                     5 <br> <span>Applications</span>
                 </a>
             </div>
@@ -17,8 +17,12 @@
 </template>
 
 <script>
+import { mapGetters } from 'vuex'
 export default {
-    name: 'categoriesTab'
+  name: 'categoriesTab',
+  computed: {
+    ...mapGetters(['auth'])
+  },
 }
 </script>
 

@@ -34,7 +34,7 @@
                 
                 <div class="text-center">
                     <p>Already Registered?
-                        <a href="/login">Login</a>
+                        <nuxt-link to="/login">Login</nuxt-link>
                     </p>
                 </div>
             </form>
@@ -48,9 +48,8 @@
 <script>
 import navbar from '../../components/navbar.vue'
 import sectionFooter from '../../components/footer.vue'
-import firebase from 'firebase/app'
-import 'firebase/auth'
-import 'firebase/firestore'
+import { mapGetters } from 'vuex'
+
 
 export default {
   name: 'App',
@@ -66,60 +65,50 @@ export default {
       password: ""
     };
   },
+  computed: {
+    ...mapGetters(['auth'])
+  },
+  watch: {
+    auth (value) {
+      if (value) {
+        this.$router.push({
+          path: '/home'
+        })
+      }
+    }
+  },
   methods: {
     async userSignUp() {
-      // try {
-      //   var user = await firebase.default.auth().createUserWithEmailAndPassword(this.email, this.password)
-
-      //   await firebase.default.firestore().collection('users').doc(user.uid).set({
-      //     id: user.uid,
-      //     photo_url: '',
-      //     firstName: this.firstName,
-      //     lastName: this.lastName,
-      //     city: '',
-      //     latest_jobplace: '',
-      //     latest_jobtitle: '',
-      //     phone_number: '',
-      //     email: user.email,
-      //     about_me: '',
-      //     video_url: '',
-      //   })
-
-      //   console.log('sign up',user)
-      //   this.$store.dispatch("fetchUserTab", user)
-      //   this.$router.push('/home')
-      // }
-      // catch (err) {
-      //   alert(err.message);
-      //   console.log(err.message)
-      // }      
-      
-      this.$store
-        .dispatch("signUpUser", {
+      try {
+        const userCredential = await this.$firebase.auth().createUserWithEmailAndPassword(this.email, this.password)
+        const user = userCredential.user
+        await this.$firebase.firestore().collection('users').doc(user.uid).set({
+          id: user.uid,
+          photo_url: '',
           firstName: this.firstName,
           lastName: this.lastName,
-          email: this.email,
-          password: this.password
+          city: '',
+          latest_jobplace: '',
+          latest_jobtitle: '',
+          phone_number: '',
+          email: user.email,
+          about_me: '',
+          video_url: '',
         })
-        .then(() => {
-          this.firstName = "";
-          this.lastName = "";
-          this.email = "";
-          this.password = "";
-          //if you wanted to redirect after sign in you'd do that here with this.$router.push('/pagename')
-          this.$router.push('/home')
-        })
-        .catch(err => {
-          alert(err.message);
-        });
+      }
+      catch (err) {
+        alert(err);
+        console.log(err)
+      } 
     },
-    async userSignUpGoogle() {
-      const provider = new firebase.default.auth.GoogleAuthProvider()
-      try {
-        var user = await firebase.default.auth().signInWithPopup(provider)
 
-        await firebase.default.firestore().collection('users').doc(user.uid).set({
-          id: user.uid,
+    async userSignUpGoogle() {
+      const provider = new this.$firebase.auth.GoogleAuthProvider()
+      try {
+        const userCredential = await this.$firebase.auth().signInWithPopup(provider)
+        const user = userCredential.user
+        await this.$firebase.firestore().collection('users').doc(user.uid).set({
+          uid: user.uid,
           photo_url: user.photoURL,
           firstName: user.displayName.split(" ")[0],
           lastName: user.displayName.split(" ")[1],
@@ -134,12 +123,10 @@ export default {
           status: 'unemployed'
         })
         console.log('sign up',user)
-        this.$store.dispatch("fetchUserTab", user)
-        this.$router.push('/home')
       }
       catch (err) {
-        alert(err.message);
-        console.log(err.message)
+        alert(err);
+        console.log(err)
       }
     }
   }
