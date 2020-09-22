@@ -82,7 +82,7 @@
                         </button>
                     </editor-menu-bar>
                 
-                    <editor-content :editor="editor" />
+                    <editor-content :editor="editor"/>
                 </div>
             </div>
             <!--rich text editor-->
@@ -96,7 +96,7 @@
             </b-form>
             <div class="row button-row my-3">
                 <div class="container">
-                    <b-button type="submit" variant="primary">Submit</b-button>
+                    <b-button type="submit" variant="primary" @click="addData()" >Submit</b-button>
                     <b-button type="reset" variant="danger">Reset</b-button>
                 </div>
             </div>
@@ -110,6 +110,10 @@
 import Vue from 'vue'
 import navbar from '../../components/recruiter/navbar.vue'
 import sectionFooter from '../../components/footer.vue'
+
+import firebase from 'firebase/app'
+import 'firebase/auth'
+import 'firebase/firestore'
 
 //For Multiselect
 import Multiselect from 'vue-multiselect'
@@ -148,7 +152,6 @@ export default {
         EditorMenuBar,
         sectionFooter
     },
-
     data() {
         return {
             editor: null,
@@ -200,6 +203,9 @@ export default {
                 new History(),
             ],
             content: '<p>Add your job description..</p>',
+            onUpdate: ({ getHTML }) => {
+                this.html = getHTML()
+            }
         })
     },
 
@@ -252,7 +258,35 @@ export default {
             }
             this.skillselected.push(tag)
             this.skill.push(tag)
+        },
+
+        async addData() {
+        let UID = firebase.default.auth().currentUser.uid
+        // if (this.addaward != '' && UID) {
+        if (UID) {
+            await firebase.default.firestore()
+            .collection('jobs').add({
+                uid: UID,
+                company: this.form.company,
+                jobtitle: this.form.jobtitle,
+                location: this.form.location,
+                employment: this.form.employment,
+                seniority: this.form.seniority,
+                jobfunction: this.jobfunctselected,
+                industry: this.industryselected,
+                skill: this.skillselected,
+                jobDescription: this.html,
+                // salary: this.salary
+            })
+            .then(() => {
+                this.$router.push('/companies/view')
+            })
+            .catch((err) => {
+                console.log(err)
+            })
+            
         }
+        },
     }
 }
 </script>
